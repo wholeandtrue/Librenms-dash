@@ -32,10 +32,18 @@ app.post("/login", async (c) => {
   const { username, password } = body;
   if (
     typeof username !== "string" ||
-    typeof password !== "string" ||
-    username !== AUTH_USERNAME ||
-    !(await verifyPassword(password, AUTH_PASSWORD_HASH, AUTH_PASSWORD))
+    typeof password !== "string"
   ) {
+    return c.json({ error: "Invalid username or password" }, 401);
+  }
+
+  const passwordValid = await verifyPassword(
+    password,
+    AUTH_PASSWORD_HASH,
+    AUTH_PASSWORD,
+  );
+
+  if (!passwordValid || username !== AUTH_USERNAME) {
     return c.json({ error: "Invalid username or password" }, 401);
   }
 
