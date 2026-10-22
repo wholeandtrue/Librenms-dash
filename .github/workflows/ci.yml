@@ -38,5 +38,5 @@ jobs:
       - name: Build backend
         run: corepack pnpm --filter backend build
 
-      - name: Build production Docker image
-        run: docker build -t librenms-dash:ci .
+      - name: Build application Docker stage
+        run: docker build --target build -t librenms-dash:ci-build .
