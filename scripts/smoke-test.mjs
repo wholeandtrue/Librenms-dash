@@ -4,12 +4,12 @@ import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
-import { hash, argon2id } from "../backend/node_modules/argon2/argon2.cjs";
+import argon2 from "../backend/node_modules/argon2/argon2.cjs";
 
 const secretDir = mkdtempSync(join(tmpdir(), "librenms-dash-smoke-"));
 const token = "synthetic-api-token";
 writeFileSync(join(secretDir, "api"), token + "\n", { mode: 0o600 });
-writeFileSync(join(secretDir, "hash"), (await hash("synthetic-password", { type: argon2id })) + "\n", { mode: 0o600 });
+writeFileSync(join(secretDir, "hash"), (await argon2.hash("synthetic-password", { type: argon2.argon2id })) + "\n", { mode: 0o600 });
 
 let hits = 0;
 const mock = createServer((req, res) => {
