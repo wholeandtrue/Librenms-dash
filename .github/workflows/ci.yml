@@ -38,5 +38,8 @@ jobs:
       - name: Build backend
         run: corepack pnpm --filter backend build
 
+      - name: Smoke-test real backend with synthetic secrets and mock API
+        run: node scripts/smoke-test.mjs
+
       - name: Build application Docker stage
         run: docker build --target build -t librenms-dash:ci-build .
